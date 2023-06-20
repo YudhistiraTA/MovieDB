@@ -7,14 +7,14 @@ import {
 } from "react-native-paper";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
-export default function Detail() {
+export default function Detail({ navigation }) {
 	return (
 		<SafeAreaProvider>
 			<SafeAreaView style={{ flex: 1 }}>
 				<PaperProvider style={theme}>
 					<Button
 						mode="contained"
-						onPress={() => console.log("Pressed")}
+						onPress={() => navigation.navigate("Home")}
 					>
 						To Home
 					</Button>
