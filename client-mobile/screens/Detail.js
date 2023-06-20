@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Title, Paragraph, Divider, Avatar } from "react-native-paper";
 import { View, Image, StyleSheet, Linking, ScrollView } from "react-native";
 
