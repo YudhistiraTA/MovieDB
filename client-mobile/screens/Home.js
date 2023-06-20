@@ -28,7 +28,7 @@ export default function Home({ navigation }) {
 	return (
 		<SafeAreaProvider>
 			<SafeAreaView style={{ flex: 1 }}>
-				<PaperProvider style={theme}>
+				<PaperProvider>
 					<FlatList
 						data={movies}
 						renderItem={({ item }) => <MovieCard movie={item} />}
@@ -40,12 +40,3 @@ export default function Home({ navigation }) {
 		</SafeAreaProvider>
 	);
 }
-
-const theme = {
-	...DefaultTheme,
-	colors: {
-		...DefaultTheme.colors,
-		primary: "tomato",
-		secondary: "yellow"
-	}
-};
