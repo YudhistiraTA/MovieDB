@@ -33,7 +33,7 @@ module.exports = class MovieController {
 			redis.set("movies", JSON.stringify(movieWithAuthor));
 			res.status(200).json(movieWithAuthor);
 		} catch (error) {
-			next(error);
+			next(error.response);
 		}
 	}
 	static async createMovie(req, res, next) {
@@ -62,7 +62,7 @@ module.exports = class MovieController {
 			redis.del("movies");
 			res.status(201).json(creationStatus);
 		} catch (error) {
-			next(error);
+			next(error.response);
 		}
 	}
 	static async deleteMovie(req, res, next) {
@@ -73,6 +73,38 @@ module.exports = class MovieController {
 			);
 			redis.del("movies");
 			res.status(200).json(deletionStatus);
+		} catch (error) {
+			next(error.response);
+		}
+	}
+	static async editMovie(req, res, next) {
+		try {
+			let {
+				title,
+				synopsis,
+				trailerUrl,
+				imgUrl,
+				rating,
+				GenreId,
+				Casts
+			} = req.body;
+			const { id } = req.params;
+			const { data: updateStatus } = await axios.put(
+				MOVIE_URL + "/movies/" + id,
+				{
+					title,
+					synopsis,
+					trailerUrl,
+					imgUrl,
+					rating,
+					GenreId,
+					Casts
+				}
+			);
+			redis.del("movies");
+			res.status(200).json({
+				message: "Edit successful"
+			});
 		} catch (error) {
 			next(error.response);
 		}
