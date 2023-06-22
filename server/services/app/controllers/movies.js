@@ -76,6 +76,7 @@ module.exports = class MovieController {
 		try {
 			const { id } = req.params;
 			const deletionStatus = await Movie.destroy({ where: { id } });
+			if (!deletionStatus) throw { name: "notFound" };
 			res.status(200).send({ message: "Deletion successful" });
 		} catch (error) {
 			next(error);

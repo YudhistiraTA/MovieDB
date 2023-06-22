@@ -1,8 +1,8 @@
 module.exports = (err, req, res, next) => {
-	switch (err.name) {
-		case "notFound":
+	switch (err.status) {
+		case 404:
 			res.status(404).json({
-				message: "Error 404: Not Found"
+				message: err.data.message.join(", ")
 			});
 			break;
 		default:

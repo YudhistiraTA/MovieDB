@@ -6,12 +6,12 @@ module.exports = class MovieController {
 		try {
 			const movie = await redis.get("movies");
 			if (movie) {
-				res.status(200).send(JSON.parse(movie));
+				res.status(200).json(JSON.parse(movie));
 				return;
 			}
-			const response = await axios.get(MOVIE_URL + "/movies");
-			redis.set("movies", JSON.stringify(response.data));
-			res.status(200).send(response.data);
+			const { data } = await axios.get(MOVIE_URL + "/movies");
+			redis.set("movies", JSON.stringify(data));
+			res.status(200).json(data);
 		} catch (error) {
 			next(error);
 		}
@@ -27,20 +27,34 @@ module.exports = class MovieController {
 				GenreId,
 				Casts
 			} = req.body;
-			const { data:creationStatus} = await axios.post(MOVIE_URL + "/movies", {
-				title,
-				synopsis,
-				trailerUrl,
-				imgUrl,
-				rating,
-				GenreId,
-				Casts
-			});
-			console.log(creationStatus);
+			const { data: creationStatus } = await axios.post(
+				MOVIE_URL + "/movies",
+				{
+					title,
+					synopsis,
+					trailerUrl,
+					imgUrl,
+					rating,
+					GenreId,
+					Casts
+				}
+			);
+			redis.del("movies");
 			res.status(201).json(creationStatus);
 		} catch (error) {
-			console.log(error);
 			next(error);
+		}
+	}
+	static async deleteMovie(req, res, next) {
+		try {
+			const { id } = req.params;
+			const { data: deletionStatus } = await axios.delete(
+				MOVIE_URL + "/movies/" + id
+			);
+			redis.del("movies");
+			res.status(200).json(deletionStatus);
+		} catch (error) {
+			next(error.response);
 		}
 	}
 };
