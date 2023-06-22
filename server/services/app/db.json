@@ -1,0 +1,94 @@
+{
+  "Movies": [
+    {
+      "id": 1,
+      "title": "SPIDER-MAN: ACROSS THE SPIDER-VERSE",
+      "slug": "spider-man-across-the-spider-verse",
+      "synopsis": "Miles Morales returns for the next chapter of the Oscar®-winning Spider-Verse saga, an epic adventure that will transport Brooklyn's full-time, friendly neighborhood Spider-Man across the Multiverse to join forces with Gwen Stacy and a new team of Spider-People to face off with a villain more powerful than anything they have ever encountered.",
+      "trailerUrl": "https://youtu.be/shW9i6k8cB0",
+      "imgUrl": "https://resizing.flixster.com/Kcw4PRHpIZSeBjo0FbhVwxQ7vdA=/206x305/v2/https://resizing.flixster.com/abVYM20-_8hBgvl4VJTC_28L0Tw=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2YzNTQxM2E4LTUzYmYtNGI3MS1iM2FmLWJjYTFmOWZjMDYzNS5qcGc=",
+      "rating": 96,
+      "GenreId": 1,
+      "AuthorId": 1,
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    },
+    {
+      "id": 2,
+      "title": "GUARDIANS OF THE GALAXY VOL. 3",
+      "slug": "guardians-of-the-galaxy-vol-3",
+      "synopsis": "In Marvel Studios \"Guardians of the Galaxy Vol. 3\" our beloved band of misfits are looking a bit different these days. Peter Quill, still reeling from the loss of Gamora, must rally his team around him to defend the universe along with protecting one of their own. A mission that, if not completed successfully, could quite possibly lead to the end of the Guardians as we know them.",
+      "trailerUrl": "https://youtu.be/u3V5KDHRQvk",
+      "imgUrl": "https://resizing.flixster.com/7BvHbqYVikal2I8DAX-HnNSdrdU=/206x305/v2/https://resizing.flixster.com/p8g-u3ZgPuxrg4x7aq1tidyffGg=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2FiZDg0OTc0LWVkMTktNDVhYS05ODljLTNkMjYxMjA0OTdjMy5qcGc=",
+      "rating": 82,
+      "GenreId": 2,
+      "AuthorId": 1,
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    },
+    {
+      "title": "Test Movie Edited",
+      "synopsis": "This is a test submission, but edited.",
+      "trailerUrl": "https://youtu.be/ahiYm13TLT8",
+      "imgUrl": "https://fastly.picsum.photos/id/671/200/300.jpg?hmac=I6A0nYPaPDSVj8NEal4lbRDDN6E617I8S8Pc3ulWHS8",
+      "rating": "88",
+      "GenreId": "2",
+      "id": 4
+    }
+  ],
+  "Genres": [
+    {
+      "id": 1,
+      "name": "Animation",
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    },
+    {
+      "id": 2,
+      "name": "Action",
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    },
+    {
+      "name": "Comedy",
+      "id": 3
+    }
+  ],
+  "Casts": [
+    {
+      "id": 1,
+      "movieId": 1,
+      "name": "Shameik Moore",
+      "profilePict": "https://resizing.flixster.com/61R41C31mcot1BQjksY6TXrvnf8=/100x120/v2/https://flxt.tmsimg.com/assets/692922_v9_bb.jpg",
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    },
+    {
+      "id": 2,
+      "movieId": 2,
+      "name": "Chris Pratt",
+      "profilePict": "https://resizing.flixster.com/MOBKRyYrsYM7BV8SMC3eIXmTj58=/100x120/v2/https://flxt.tmsimg.com/assets/249381_v9_bb.jpg",
+      "createdAt": "2023-06-07 16:55:15.003 +0700",
+      "updatedAt": "2023-06-07 16:55:15.003 +0700"
+    }
+  ],
+  "Users": [
+    {
+      "id": 1,
+      "username": "master",
+      "email": "master@mail.com",
+      "password": "12345",
+      "role": "admin",
+      "phoneNumber": "081234567",
+      "address": "Rumah sendiri"
+    },
+    {
+      "username": "admin",
+      "email": "admin@mail.com",
+      "password": "12345",
+      "phoneNumber": "087654321",
+      "address": "Di kantor",
+      "id": 2
+    }
+  ]
+}
