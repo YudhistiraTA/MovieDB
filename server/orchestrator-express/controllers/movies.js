@@ -10,16 +10,26 @@ module.exports = class MovieController {
 				res.status(200).json(JSON.parse(movie));
 				return;
 			}
-			let { data: moviesRest } = await axios.get(MOVIE_URL + "/movies");
-			const movieWithAuthorPromises = moviesRest.map(async (movie) => {
-				const { data } = await axios.get(
-					USER_URL + "/users/" + movie.AuthorId
+			let { data: movieRest } = await axios.get(MOVIE_URL + "/movies");
+
+			// const movieWithAuthorPromises = movieRest.map(async (movie) => {
+			// 	const { data } = await axios.get(
+			// 		USER_URL + "/users/" + movie.AuthorId
+			// 	);
+			// 	movie.Author = data.data;
+			// 	delete movie.AuthorId;
+			// 	return movie;
+			// });
+			// const movieWithAuthor = await Promise.all(movieWithAuthorPromises);
+
+			const { data: userData } = await axios.get(USER_URL + "/users");
+			const movieWithAuthor = movieRest.map((movie) => {
+				movie.Author = userData.data.find(
+					(user) => user._id == movie.AuthorId
 				);
-				movie.Author = data.data;
 				delete movie.AuthorId;
 				return movie;
 			});
-			const movieWithAuthor = await Promise.all(movieWithAuthorPromises);
 			redis.set("movies", JSON.stringify(movieWithAuthor));
 			res.status(200).json(movieWithAuthor);
 		} catch (error) {
