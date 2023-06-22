@@ -65,6 +65,7 @@ module.exports = class MovieController {
 			else
 				data = await Movie.findAll({
 					include: [
+						{ model: Cast },
 						{ model: Genre },
 					],
 					order: [["id", "ASC"]]
