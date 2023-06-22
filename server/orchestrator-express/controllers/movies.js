@@ -9,10 +9,37 @@ module.exports = class MovieController {
 				res.status(200).send(JSON.parse(movie));
 				return;
 			}
-			const { data } = await axios.get(MOVIE_URL + "/movies");
-			redis.set("movies", JSON.stringify(data));
-			res.status(200).send(data);
+			const response = await axios.get(MOVIE_URL + "/movies");
+			redis.set("movies", JSON.stringify(response.data));
+			res.status(200).send(response.data);
 		} catch (error) {
+			next(error);
+		}
+	}
+	static async createMovie(req, res, next) {
+		try {
+			let {
+				title,
+				synopsis,
+				trailerUrl,
+				imgUrl,
+				rating,
+				GenreId,
+				Casts
+			} = req.body;
+			const { data:creationStatus} = await axios.post(MOVIE_URL + "/movies", {
+				title,
+				synopsis,
+				trailerUrl,
+				imgUrl,
+				rating,
+				GenreId,
+				Casts
+			});
+			console.log(creationStatus);
+			res.status(201).json(creationStatus);
+		} catch (error) {
+			console.log(error);
 			next(error);
 		}
 	}

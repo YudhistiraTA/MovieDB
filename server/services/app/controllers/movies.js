@@ -13,7 +13,8 @@ module.exports = class MovieController {
 				GenreId,
 				Casts
 			} = req.body;
-			const { id: AuthorId } = req.additionalData;
+			// const { id: AuthorId } = req.additionalData;
+			const AuthorId = "64931654b379120600a7793c";
 			const newMovie = await Movie.create(
 				{
 					title,
@@ -42,6 +43,7 @@ module.exports = class MovieController {
 			});
 		} catch (error) {
 			trx.rollback();
+			console.log(error);
 			next(error);
 		}
 	}
@@ -55,19 +57,14 @@ module.exports = class MovieController {
 					attributes: { exclude: ["createdAt", "updatedAt"] }
 				});
 			else if (slug)
-				data = await Movie.findOne(
-					{
-						where: { slug },
-						include: [{ model: Cast }, { model: Genre }],
-						attributes: { exclude: ["createdAt", "updatedAt"] }
-					},
-				);
+				data = await Movie.findOne({
+					where: { slug },
+					include: [{ model: Cast }, { model: Genre }],
+					attributes: { exclude: ["createdAt", "updatedAt"] }
+				});
 			else
 				data = await Movie.findAll({
-					include: [
-						{ model: Cast },
-						{ model: Genre },
-					],
+					include: [{ model: Cast }, { model: Genre }],
 					order: [["id", "ASC"]]
 				});
 			res.status(200).send(data);
