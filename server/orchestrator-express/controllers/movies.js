@@ -12,26 +12,20 @@ module.exports = class MovieController {
 			}
 			let { data: movieRest } = await axios.get(MOVIE_URL + "/movies");
 
-			// const movieWithAuthorPromises = movieRest.map(async (movie) => {
-			// 	const { data } = await axios.get(
-			// 		USER_URL + "/users/" + movie.AuthorId
+			// SWITCH TO THIS TO ENABLE USER INCLUSION IN MOVIE fetchAll
+			// const { data: userData } = await axios.get(USER_URL + "/users");
+			// const movieWithAuthor = movieRest.map((movie) => {
+			// 	movie.Author = userData.data.find(
+			// 		(user) => user._id == movie.AuthorId
 			// 	);
-			// 	movie.Author = data.data;
 			// 	delete movie.AuthorId;
 			// 	return movie;
 			// });
-			// const movieWithAuthor = await Promise.all(movieWithAuthorPromises);
+			// redis.set("movies", JSON.stringify(movieWithAuthor));
+			// res.status(200).json(movieWithAuthor);	
 
-			const { data: userData } = await axios.get(USER_URL + "/users");
-			const movieWithAuthor = movieRest.map((movie) => {
-				movie.Author = userData.data.find(
-					(user) => user._id == movie.AuthorId
-				);
-				delete movie.AuthorId;
-				return movie;
-			});
-			redis.set("movies", JSON.stringify(movieWithAuthor));
-			res.status(200).json(movieWithAuthor);
+			redis.set("movies", JSON.stringify(movieRest));
+			res.status(200).json(movieRest);
 		} catch (error) {
 			next(error.response);
 		}
@@ -102,11 +96,24 @@ module.exports = class MovieController {
 				}
 			);
 			redis.del("movies");
+			redis.del(`movies:${id}`);
 			res.status(200).json({
 				message: "Edit successful"
 			});
 		} catch (error) {
 			next(error.response);
+		}
+	}
+	static async fetchMovieDetail(req, res, next) {
+		try {
+			const { id } = req.params;
+			let {data:movie} = await axios.get(MOVIE_URL + "/movies/" + id);
+			const {data:user} = await axios.get(USER_URL + "/users/" + movie.AuthorId);
+			movie.Author = user.data;
+			delete movie.AuthorId;
+			res.status(200).json(movie);
+		} catch (error) {
+			next(error);
 		}
 	}
 };

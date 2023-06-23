@@ -6,4 +6,5 @@ router.get("/movies", MovieController.fetchMovies);
 router.post("/movies", MovieController.createMovie);
 router.delete("/movies/:id", MovieController.deleteMovie);
 router.put("/movies/:id", MovieController.editMovie);
+router.get("/movies/:id", MovieController.fetchMovieDetail);
 module.exports = router;
