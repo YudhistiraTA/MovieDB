@@ -2,7 +2,7 @@ module.exports = (err, req, res, next) => {
     switch (err.name) {
         case "BSONError":
             console.log(err.name, err.message);
-            res.status(401).json({name: err.name, message: err.message});
+            res.status(401).json({name: err.name + ":idLength", message: err.message});
             break;
         case "invalidLogin":
             res.status(401).json({ message: "Invalid email or password" })

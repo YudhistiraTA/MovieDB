@@ -15,7 +15,7 @@ module.exports = class UserController {
             redis.set("users", JSON.stringify(users.data));
 			res.status(200).json(users.data);
 		} catch (error) {
-			next(error);
+			next(error.response.data);
 		}
 	}
 	static async findUserById(req, res, next) {
@@ -32,22 +32,21 @@ module.exports = class UserController {
             redis.set(`user:${id}`, JSON.stringify(user.data));
 			res.status(200).json(user.data);
 		} catch (error) {
-            console.log(error);
-			next(error);
+			next(error.response.data);
 		}
 	}
 	static async createUser(req, res, next) {
 		try {
 			res.status(501).send("under construction");
 		} catch (error) {
-			next(error);
+			next(error.response.data);
 		}
 	}
 	static async deleteUserById(req, res, next) {
 		try {
 			res.status(501).send("under construction");
 		} catch (error) {
-			next(error);
+			next(error.response.data);
 		}
 	}
 };

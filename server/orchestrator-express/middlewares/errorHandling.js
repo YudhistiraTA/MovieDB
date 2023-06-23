@@ -10,6 +10,11 @@ module.exports = (err, req, res, next) => {
 				message: err.message
 			});
 			break;
+		case "BSONError:idLength":
+			res.status(401).json({
+				message: err.message
+			});
+			break;
 		case "SequelizeValidationError":
 			res.status(401).json({
 				message: err.message
