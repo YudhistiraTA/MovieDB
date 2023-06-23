@@ -102,9 +102,9 @@ module.exports = class MovieController {
 					trailerUrl,
 					imgUrl,
 					rating,
-					GenreId
+					GenreId,
 				},
-				{ where: { id } },
+				{ where: { id }, individualHooks: true },
 				{ transaction: trx }
 			);
 			await Cast.destroy(
