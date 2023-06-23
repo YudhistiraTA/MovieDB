@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			hooks: {
-				beforeValidate(movie) {
+				beforeCreate(movie) {
 					movie.slug = stringToSlug(movie.title);
 				},
 				beforeUpdate(movie) {

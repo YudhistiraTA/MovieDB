@@ -126,6 +126,7 @@ module.exports = class MovieController {
 			if (!updatedData[0]) throw { name: "notFound" };
 			res.status(200).send(updatedData);
 		} catch (error) {
+			console.log(error);
 			next(error);
 		}
 	}

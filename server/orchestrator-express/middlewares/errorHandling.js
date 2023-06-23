@@ -10,6 +10,11 @@ module.exports = (err, req, res, next) => {
 				message: err.message
 			});
 			break;
+		case "SequelizeValidationError":
+			res.status(401).json({
+				message: err.message
+			});
+			break;
 		default:
 			res.status(500).json({
 				message: "Error 500: Internal server error"
