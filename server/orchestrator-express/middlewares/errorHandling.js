@@ -1,8 +1,13 @@
 module.exports = (err, req, res, next) => {
-	switch (err.status) {
-		case 404:
+	switch (err.name) {
+		case "notFound":
 			res.status(404).json({
-				message: err.data.message.join(", ")
+				message: "Not found"
+			});
+			break;
+		case "SequelizeForeignKeyConstraintError":
+			res.status(409).json({
+				message: err.message
 			});
 			break;
 		default:

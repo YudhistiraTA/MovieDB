@@ -51,22 +51,26 @@ module.exports = class MovieController {
 		try {
 			const { id, slug } = req.params;
 			let data;
-			if (id)
+			if (id) {
 				data = await Movie.findByPk(id, {
 					include: [{ model: Cast }, { model: Genre }],
 					attributes: { exclude: ["createdAt", "updatedAt"] }
 				});
-			else if (slug)
+				if (!data) throw { name: "notFound" };
+			} else if (slug) {
 				data = await Movie.findOne({
 					where: { slug },
 					include: [{ model: Cast }, { model: Genre }],
 					attributes: { exclude: ["createdAt", "updatedAt"] }
 				});
-			else
+				if (!data) throw { name: "notFound" };
+			} else {
 				data = await Movie.findAll({
 					include: [{ model: Cast }, { model: Genre }],
 					order: [["id", "ASC"]]
 				});
+				if (!data) throw { name: "notFound" };
+			}
 			res.status(200).send(data);
 		} catch (error) {
 			next(error);
@@ -102,7 +106,7 @@ module.exports = class MovieController {
 					trailerUrl,
 					imgUrl,
 					rating,
-					GenreId,
+					GenreId
 				},
 				{ where: { id }, individualHooks: true },
 				{ transaction: trx }

@@ -27,10 +27,12 @@ module.exports = class UserController {
                 return;
             }
             const { data:user } = await axios.get(USER_URL + "/users/" + id);
+            if (!user.data) throw {name: "notFound"}
+            console.log(user.data);
             redis.set(`user:${id}`, JSON.stringify(user.data));
 			res.status(200).json(user.data);
-			res.status(501).send("under construction");
 		} catch (error) {
+            console.log(error);
 			next(error);
 		}
 	}

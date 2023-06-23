@@ -22,12 +22,12 @@ module.exports = class MovieController {
 			// 	return movie;
 			// });
 			// redis.set("movies", JSON.stringify(movieWithAuthor));
-			// res.status(200).json(movieWithAuthor);	
+			// res.status(200).json(movieWithAuthor);
 
 			redis.set("movies", JSON.stringify(movieRest));
 			res.status(200).json(movieRest);
 		} catch (error) {
-			next(error.response);
+			next(error.response.data);
 		}
 	}
 	static async createMovie(req, res, next) {
@@ -56,7 +56,7 @@ module.exports = class MovieController {
 			redis.del("movies");
 			res.status(201).json(creationStatus);
 		} catch (error) {
-			next(error.response);
+			next(error.response.data);
 		}
 	}
 	static async deleteMovie(req, res, next) {
@@ -69,7 +69,7 @@ module.exports = class MovieController {
 			redis.del(`movies:${id}`);
 			res.status(200).json(deletionStatus);
 		} catch (error) {
-			next(error.response);
+			next(error.response.data);
 		}
 	}
 	static async editMovie(req, res, next) {
@@ -102,7 +102,7 @@ module.exports = class MovieController {
 				message: "Edit successful"
 			});
 		} catch (error) {
-			next(error.response);
+			next(error.response.data);
 		}
 	}
 	static async fetchMovieDetail(req, res, next) {
@@ -113,14 +113,17 @@ module.exports = class MovieController {
 				res.status(200).json(JSON.parse(movieCache));
 				return;
 			}
-			let {data:movie} = await axios.get(MOVIE_URL + "/movies/" + id);
-			const {data:user} = await axios.get(USER_URL + "/users/" + movie.AuthorId);
+			let { data: movie } = await axios.get(MOVIE_URL + "/movies/" + id);
+			if (!movie) throw { name: "notFound" };
+			const { data: user } = await axios.get(
+				USER_URL + "/users/" + movie.AuthorId
+			);
 			movie.Author = user.data;
 			delete movie.AuthorId;
 			redis.set(`movies:${id}`, JSON.stringify(movie));
 			res.status(200).json(movie);
 		} catch (error) {
-			next(error);
+			next(error.response.data);
 		}
 	}
 };

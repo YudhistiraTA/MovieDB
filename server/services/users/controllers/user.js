@@ -27,12 +27,17 @@ module.exports = {
 		});
 	},
 	findUserById: async (req, res, next) => {
-		const { id } = req.params;
-		const foundUser = await User.findById(id);
-		res.status(200).json({
-			statusCode: 200,
-			data: foundUser
-		});
+		try {
+			const { id } = req.params;
+			const foundUser = await User.findById(id);
+			res.status(200).json({
+				statusCode: 200,
+				data: foundUser
+			});
+		} catch (error) {
+			console.log({ name: error.name, messsage: error.message });
+			next({ name: error.name, message: error.message });
+		}
 	},
 	deleteUserById: async (req, res, next) => {
 		const { id } = req.params;

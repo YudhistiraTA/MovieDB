@@ -1,13 +1,8 @@
 module.exports = (err, req, res, next) => {
     switch (err.name) {
-        case "SequelizeValidationError":
-            let emailEmpty = false;
-            res.status(400).json({
-                message: err.errors.flatMap((el) => {
-                    if (el.message === 'Email is required') emailEmpty = true;
-                    return emailEmpty && el.message === 'Email is invalid' ? [] : el.message;
-                })
-            })
+        case "BSONError":
+            console.log(err.name, err.message);
+            res.status(401).json({name: err.name, message: err.message});
             break;
         case "invalidLogin":
             res.status(401).json({ message: "Invalid email or password" })
@@ -23,7 +18,7 @@ module.exports = (err, req, res, next) => {
             res.status(403).json({ message: "Forbidden" })
             break;
         case "notFound":
-            res.status(404).json({ name: "notFound", message: "Not found" })
+            res.status(404).json({ message: "Not found" })
             break;
         case "SequelizeUniqueConstraintError":
             res.status(409).json({
@@ -32,7 +27,6 @@ module.exports = (err, req, res, next) => {
             break;
         case "SequelizeForeignKeyConstraintError":
             res.status(409).json({
-                name: err.name,
                 message: "This item is not available/still in use!"
             })
             break;
