@@ -66,6 +66,7 @@ module.exports = class MovieController {
 				MOVIE_URL + "/movies/" + id
 			);
 			redis.del("movies");
+			redis.del(`movies:${id}`);
 			res.status(200).json(deletionStatus);
 		} catch (error) {
 			next(error.response);
@@ -107,10 +108,16 @@ module.exports = class MovieController {
 	static async fetchMovieDetail(req, res, next) {
 		try {
 			const { id } = req.params;
+			const movieCache = await redis.get(`movie:${id}`);
+			if (movieCache) {
+				res.status(200).json(JSON.parse(movieCache));
+				return;
+			}
 			let {data:movie} = await axios.get(MOVIE_URL + "/movies/" + id);
 			const {data:user} = await axios.get(USER_URL + "/users/" + movie.AuthorId);
 			movie.Author = user.data;
 			delete movie.AuthorId;
+			redis.set(`movies:${id}`, JSON.stringify(movie));
 			res.status(200).json(movie);
 		} catch (error) {
 			next(error);
