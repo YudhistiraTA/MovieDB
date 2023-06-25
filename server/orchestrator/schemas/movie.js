@@ -26,9 +26,29 @@ const typeDefs = `#graphql
         Genre: Genre
         Error: Error
 	}
+    input CastInput {
+        name: String
+        profilePict: String
+    }
+    input MovieInput {
+        title: String
+		synopsis: String
+		trailerUrl: String
+		imgUrl: String
+		rating: Int
+		GenreId: Int
+		Casts: [CastInput]
+    }
     type MoviesOrError {
         movies: [Movie]
         Error: Error
+    }
+    type SuccessOrError {
+		Error: Error
+	}
+    type Mutation {
+        createMovie(input: UserInput!): SuccessOrError
+		deleteMovie(id: Int!): SuccessOrError
     }
     type Query {
 		movies: MoviesOrError,

@@ -30,15 +30,6 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			slug: {
 				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notEmpty: {
-						msg: "Movie slug is required"
-					},
-					notNull: {
-						msg: "Movie slug is required"
-					}
-				}
 			},
 			synopsis: {
 				type: DataTypes.STRING,
