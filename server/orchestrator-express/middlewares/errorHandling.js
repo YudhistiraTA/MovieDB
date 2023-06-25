@@ -11,16 +11,15 @@ module.exports = (err, req, res, next) => {
 			});
 			break;
 		case "BSONError:idLength":
-			res.status(401).json({
-				message: err.message
-			});
-			break;
 		case "SequelizeValidationError":
-			res.status(401).json({
+		case "validationError":
+		case "uniqueEmail":
+			res.status(400).json({
 				message: err.message
 			});
 			break;
 		default:
+			console.log(err);
 			res.status(500).json({
 				message: "Error 500: Internal server error"
 			});

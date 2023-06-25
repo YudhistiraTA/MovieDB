@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
 
 module.exports = {
 	findAllUsers: async (req, res, next) => {
@@ -10,21 +9,20 @@ module.exports = {
 		});
 	},
 	createUser: async (req, res, next) => {
-		const { username, email, password, phoneNumber, address } = req.body;
-		const hashedPassword = bcrypt.hashSync(password, 10);
-		const newUser = await User.createUser({
-			username,
-			email,
-			password: hashedPassword,
-			phoneNumber,
-			address
-		});
-
-		res.status(201).json({
-			statusCode: 201,
-			id: newUser.insertedId,
-			email
-		});
+		try {
+			const { username, email, password, phoneNumber, address } =
+				req.body;
+			const newUser = await User.createUser({
+				username,
+				email,
+				password,
+				phoneNumber,
+				address
+			});
+			res.status(201).json(newUser);
+		} catch (error) {
+			next(error);
+		}
 	},
 	findUserById: async (req, res, next) => {
 		try {
