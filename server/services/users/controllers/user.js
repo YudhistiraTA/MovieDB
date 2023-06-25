@@ -33,16 +33,21 @@ module.exports = {
 				data: foundUser
 			});
 		} catch (error) {
-			console.log({ name: error.name, messsage: error.message });
 			next({ name: error.name, message: error.message });
 		}
 	},
 	deleteUserById: async (req, res, next) => {
-		const { id } = req.params;
-		const deleteStatus = await User.deleteUserById(id);
-		res.status(200).json({
-			statusCode: 200,
-			deleteStatus
-		});
+		try {
+			const { id } = req.params;
+			const deleteStatus = await User.deleteUserById(id);
+			if (!deleteStatus.deletedCount) throw { name: "notFound" };
+			res.status(200).json({
+				statusCode: 200,
+				deleteStatus
+			});
+		} catch (error) {
+			console.log({ name: error.name, messsage: error.message });
+			next(error);
+		}
 	}
 };

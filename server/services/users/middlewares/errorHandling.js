@@ -1,7 +1,6 @@
 module.exports = (err, req, res, next) => {
 	switch (err.name) {
 		case "BSONError":
-			console.log(err.name, err.message);
 			res.status(400).json({
 				name: err.name + ":idLength",
 				message: err.message
@@ -27,7 +26,7 @@ module.exports = (err, req, res, next) => {
 			res.status(403).json({ message: "Forbidden" });
 			break;
 		case "notFound":
-			res.status(404).json({ message: "Not found" });
+			res.status(404).json({ name: "notFound", message: "Not found" });
 			break;
 		case "SequelizeUniqueConstraintError":
 			res.status(409).json({

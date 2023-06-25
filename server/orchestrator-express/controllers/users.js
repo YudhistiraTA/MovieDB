@@ -39,13 +39,16 @@ module.exports = class UserController {
 		try {
 			const { username, email, password, phoneNumber, address } =
 				req.body;
-			const { data:createStatus} = await axios.post(USER_URL + "/users", {
-				username,
-				email,
-				password,
-				phoneNumber,
-				address
-			});
+			const { data: createStatus } = await axios.post(
+				USER_URL + "/users",
+				{
+					username,
+					email,
+					password,
+					phoneNumber,
+					address
+				}
+			);
 			res.status(201).json(createStatus);
 		} catch (error) {
 			console.log(error);
@@ -54,7 +57,11 @@ module.exports = class UserController {
 	}
 	static async deleteUserById(req, res, next) {
 		try {
-			res.status(501).send("under construction");
+			const { id } = req.params;
+			const { data: deleteStatus } = await axios.delete(
+				USER_URL + "/users/" + id
+			);
+			res.status(200).send(deleteStatus);
 		} catch (error) {
 			next(error.response.data);
 		}
