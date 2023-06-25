@@ -10,9 +10,7 @@ module.exports = (err, req, res, next) => {
 			res.status(401).json({ message: "Invalid email or password" });
 			break;
 		case "validationError":
-			res.status(400).json({ name: err.name, message: err.message });
-			break;
-		case "uniqueEmail":
+			case "uniqueEmail":
 			res.status(400).json({ name: err.name, message: err.message });
 			break;
 		case "invalidToken":

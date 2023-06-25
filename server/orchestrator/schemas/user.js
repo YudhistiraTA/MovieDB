@@ -25,10 +25,12 @@ const typeDefs = `#graphql
 	type SuccessOrError {
 		acknowledged: Boolean
 		insertedId: String
+		deletedCount: Int
 		Error: Error
 	}
     type Mutation {
         createUser(input: UserInput!): SuccessOrError
+		deleteUser(_id: String!): SuccessOrError
     }
 	type UsersOrError {
 		users: [User]
@@ -64,9 +66,23 @@ const resolvers = {
 	Mutation: {
 		createUser: async (_, { input }) => {
 			try {
-				const { data: user } = await axios.post(`${USER_URL}/users`, input);
+				const { data: user } = await axios.post(
+					`${USER_URL}/users`,
+					input
+				);
 				console.log(user);
 				return user;
+			} catch (error) {
+				return { Error: error.response.data };
+			}
+		},
+		deleteUser: async (_, { _id }) => {
+			try {
+				const { data: deleteStatus } = await axios.delete(
+					`${USER_URL}/users/${_id}`
+				);
+				console.log(deleteStatus);
+				return deleteStatus;
 			} catch (error) {
 				return { Error: error.response.data };
 			}

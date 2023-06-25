@@ -42,12 +42,8 @@ module.exports = {
 			const { id } = req.params;
 			const deleteStatus = await User.deleteUserById(id);
 			if (!deleteStatus.deletedCount) throw { name: "notFound" };
-			res.status(200).json({
-				statusCode: 200,
-				deleteStatus
-			});
+			res.status(200).json(deleteStatus);
 		} catch (error) {
-			console.log({ name: error.name, messsage: error.message });
 			next(error);
 		}
 	}
