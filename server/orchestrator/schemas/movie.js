@@ -24,6 +24,7 @@ const typeDefs = `#graphql
 		rating: String
 		Casts: [Cast]
         Genre: Genre
+        Error: Error
 	}
     type MoviesOrError {
         movies: [Movie]
@@ -31,6 +32,7 @@ const typeDefs = `#graphql
     }
     type Query {
 		movies: MoviesOrError,
+        movie(id: Int!): Movie
 	}
 `;
 
@@ -42,6 +44,14 @@ const resolvers = {
 				return { movies };
 			} catch (error) {
 				console.log(error);
+				return { Error: error.response.data };
+			}
+		},
+		movie: async (_, { id }) => {
+			try {
+                const { data: movie } = await axios.get(MOVIE_URL + "/movies/" + id);
+				return movie;
+			} catch (error) {
 				return { Error: error.response.data };
 			}
 		}
