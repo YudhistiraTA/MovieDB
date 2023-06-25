@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDatabase } = require("../config/mongoConnection");
+const bcrypt = require("bcrypt");
 
 class User {
 	static getCollections() {
@@ -15,13 +16,41 @@ class User {
 	}
 
 	static async createUser(user) {
-		return this.getCollections().insertOne(user);
+		try {
+			const requiredFields = ["email", "password", "username"];
+			for (let key of requiredFields) {
+				if (!user[key])
+					throw {
+						name: "validationError",
+						message: key + " is required"
+					};
+			}
+			const foundUser = await User.findByEmail(user.email);
+			if (foundUser)
+				throw {
+					name: "uniqueEmail",
+					message: "Email is already in use"
+				};
+			user.password = bcrypt.hashSync(user.password, 10);
+			return this.getCollections().insertOne(user);
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	static async findById(objectId) {
 		return this.getCollections().findOne(
 			{
 				_id: new ObjectId(objectId)
+			},
+			{ projection: { password: 0 } }
+		);
+	}
+
+	static async findByEmail(email) {
+		return this.getCollections().findOne(
+			{
+				email
 			},
 			{ projection: { password: 0 } }
 		);
