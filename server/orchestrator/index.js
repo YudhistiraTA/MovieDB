@@ -5,11 +5,15 @@ const {
 	typeDefs: userTypeDefs,
 	resolvers: userResolvers
 } = require("./schemas/user");
+const {
+	typeDefs: MovieTypeDefs,
+	resolvers: MovieResolvers
+} = require("./schemas/movie");
 
 (async () => {
 	const server = new ApolloServer({
-		typeDefs: [userTypeDefs],
-		resolvers: [userResolvers],
+		typeDefs: [userTypeDefs, MovieTypeDefs],
+		resolvers: [userResolvers, MovieResolvers],
 		introspection: true,
 		formatError: (err) => {
 			const errorDetails = JSON.parse(err.message);

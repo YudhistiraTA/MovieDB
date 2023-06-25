@@ -53,21 +53,67 @@ module.exports = class MovieController {
 			let data;
 			if (id) {
 				data = await Movie.findByPk(id, {
-					include: [{ model: Cast }, { model: Genre }],
-					attributes: { exclude: ["createdAt", "updatedAt"] }
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			} else if (slug) {
 				data = await Movie.findOne({
 					where: { slug },
-					include: [{ model: Cast }, { model: Genre }],
-					attributes: { exclude: ["createdAt", "updatedAt"] }
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			} else {
 				data = await Movie.findAll({
-					include: [{ model: Cast }, { model: Genre }],
-					order: [["id", "ASC"]]
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					order: [["id", "ASC"]],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			}
