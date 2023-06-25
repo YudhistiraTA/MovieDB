@@ -6,7 +6,7 @@ const router = require("./routers/user");
 const app = express();
 const errorHandling = require("./middlewares/errorHandling");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4001;
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
