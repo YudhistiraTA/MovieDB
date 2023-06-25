@@ -28,6 +28,7 @@ module.exports = {
 		try {
 			const { id } = req.params;
 			const foundUser = await User.findById(id);
+			if (!foundUser) throw { name: "notFound", message: "Not found" };
 			res.status(200).json({
 				statusCode: 200,
 				data: foundUser
