@@ -15,6 +15,21 @@ const typeDefs = `#graphql
 		address: String
 		Error: Error
 	}
+	input UserInput {
+        username: String
+        email: String
+        password: String
+        phoneNumber: String
+        address: String
+    }
+	type SuccessOrError {
+		acknowledged: Boolean
+		insertedId: String
+		Error: Error
+	}
+    type Mutation {
+        createUser(input: UserInput!): SuccessOrError
+    }
 	type UsersOrError {
 		users: [User]
 		Error: Error
@@ -30,9 +45,9 @@ const resolvers = {
 		users: async () => {
 			try {
 				const { data: users } = await axios.get(`${USER_URL}/users`);
-				return {users: users.data};
+				return { users: users.data };
 			} catch (error) {
-				return {Error: error.response.data};
+				return { Error: error.response.data };
 			}
 		},
 		user: async (_, { _id }) => {
@@ -42,8 +57,18 @@ const resolvers = {
 				);
 				return user.data;
 			} catch (error) {
-				console.log(error.response.data);
-				return {Error: error.response.data};
+				return { Error: error.response.data };
+			}
+		}
+	},
+	Mutation: {
+		createUser: async (_, { input }) => {
+			try {
+				const { data: user } = await axios.post(`${USER_URL}/users`, input);
+				console.log(user);
+				return user;
+			} catch (error) {
+				return { Error: error.response.data };
 			}
 		}
 	}

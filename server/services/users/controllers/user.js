@@ -21,7 +21,7 @@ module.exports = {
 			});
 			res.status(201).json(newUser);
 		} catch (error) {
-			next(error);
+			next({ name: error.name, message: error.message });
 		}
 	},
 	findUserById: async (req, res, next) => {
