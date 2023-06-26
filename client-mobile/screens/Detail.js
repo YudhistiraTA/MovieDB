@@ -9,16 +9,11 @@ import {
 import { View, Image, StyleSheet, Linking, ScrollView } from "react-native";
 import { useQuery } from "@apollo/client";
 import { GET_MOVIES_DETAIL } from "../config/queries";
-import { useEffect } from "react";
 import CastsCarousel from "../components/CastCarousel";
 
 const Detail = ({ route }) => {
 	const { id } = route.params;
-	const {
-		loading,
-		error,
-		data: movie
-	} = useQuery(GET_MOVIES_DETAIL, {
+	const { loading, data: movie } = useQuery(GET_MOVIES_DETAIL, {
 		variables: {
 			movieId: id
 		}
@@ -31,7 +26,10 @@ const Detail = ({ route }) => {
 			/>
 			<View style={styles.content}>
 				<Title style={styles.title}>{movie?.movie?.title}</Title>
-				<Badge>Posted by: {movie?.movie?.Author?.username}</Badge>
+				<View style={styles.row}>
+					<Badge>Genre: {movie?.movie?.Genre?.name}</Badge>
+					<Badge>Posted by: {movie?.movie?.Author?.username}</Badge>
+				</View>
 				<Paragraph style={styles.synopsis}>
 					{movie?.movie?.synopsis}
 				</Paragraph>
@@ -46,7 +44,7 @@ const Detail = ({ route }) => {
 					<Title style={styles.rating}>{movie?.movie?.rating}</Title>
 				</View>
 				<Title>Casts</Title>
-				<CastsCarousel data={movie?.movie?.Casts} />
+				<CastsCarousel data={movie?.movie?.Casts} style={{marginBottom:5}} />
 				<Button
 					mode="contained"
 					style={styles.button}

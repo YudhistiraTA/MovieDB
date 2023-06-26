@@ -107,7 +107,6 @@ const resolvers = {
 		},
 		editMovie: async (_, { id, input }) => {
 			try {
-				console.log(input);
 				const { data: movie } = await axios.put(
 					`${MOVIE_URL}/movies/${id}`,
 					input

@@ -70,7 +70,6 @@ const resolvers = {
 					`${USER_URL}/users`,
 					input
 				);
-				console.log(user);
 				return user;
 			} catch (error) {
 				return { Error: error.response.data };
@@ -81,7 +80,6 @@ const resolvers = {
 				const { data: deleteStatus } = await axios.delete(
 					`${USER_URL}/users/${_id}`
 				);
-				console.log(deleteStatus);
 				return deleteStatus;
 			} catch (error) {
 				return { Error: error.response.data };

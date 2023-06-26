@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
 const MovieCard = ({ movie }) => {
 	const navigation = useNavigation();

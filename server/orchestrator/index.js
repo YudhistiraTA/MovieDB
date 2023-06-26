@@ -14,10 +14,7 @@ const {
 	const server = new ApolloServer({
 		typeDefs: [userTypeDefs, MovieTypeDefs],
 		resolvers: [userResolvers, MovieResolvers],
-		introspection: true,
-		formatError: (err) => {
-			console.log(err);
-		}
+		introspection: true
 	});
 
 	const { url } = await startStandaloneServer(server, {

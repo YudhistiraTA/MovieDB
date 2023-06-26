@@ -43,7 +43,6 @@ module.exports = class MovieController {
 			});
 		} catch (error) {
 			trx.rollback();
-			console.log(error);
 			next(error);
 		}
 	}
