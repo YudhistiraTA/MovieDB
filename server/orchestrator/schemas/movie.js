@@ -45,6 +45,7 @@ const typeDefs = `#graphql
     }
     type SuccessOrError {
 		Error: Error
+		message: String
 	}
     type Mutation {
         createMovie(input: UserInput!): SuccessOrError
@@ -69,9 +70,38 @@ const resolvers = {
 		},
 		movie: async (_, { id }) => {
 			try {
-                const { data: movie } = await axios.get(MOVIE_URL + "/movies/" + id);
+				const { data: movie } = await axios.get(
+					MOVIE_URL + "/movies/" + id
+				);
 				return movie;
 			} catch (error) {
+				return { Error: error.response.data };
+			}
+		}
+	},
+	Mutation: {
+		createMovie: async (_, { input }) => {
+			try {
+				const { data: movie } = await axios.post(
+					`${USER_URL}/movies`,
+					input
+				);
+				console.log(movie);
+				return movie;
+			} catch (error) {
+				console.log(error);
+				return { Error: error.response.data };
+			}
+		},
+		deleteMovie: async (_, { id }) => {
+			try {
+				const { data: deleteStatus } = await axios.delete(
+					`${MOVIE_URL}/movies/${id}`
+				);
+				console.log(deleteStatus);
+				return deleteStatus;
+			} catch (error) {
+				console.log(error.response.data);
 				return { Error: error.response.data };
 			}
 		}
