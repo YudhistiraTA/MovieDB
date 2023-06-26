@@ -17,7 +17,7 @@ services:
     build: ./orchestrator
     container_name: orchestrator
     ports:
-      - "5000:4000"
+      - "80:4000"
     environment:
       - APP_SERVICE_URL=http://app:5002
       - USER_SERVICE_URL=http://user:5001
