@@ -85,7 +85,7 @@ const resolvers = {
 					MOVIE_URL + "/movies/" + id
 				);
 				const {data: author} = await axios.get(USER_URL + "/users/" + movie.AuthorId);
-				movie.Author = author.data;
+				movie.Author = author?.data;
 				return movie;
 			} catch (error) {
 				return { Error: error.response.data };
