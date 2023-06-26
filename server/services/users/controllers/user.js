@@ -21,13 +21,14 @@ module.exports = {
 			});
 			res.status(201).json(newUser);
 		} catch (error) {
-			next(error);
+			next({ name: error.name, message: error.message });
 		}
 	},
 	findUserById: async (req, res, next) => {
 		try {
 			const { id } = req.params;
 			const foundUser = await User.findById(id);
+			if (!foundUser) throw { name: "notFound", message: "Not found" };
 			res.status(200).json({
 				statusCode: 200,
 				data: foundUser
@@ -41,12 +42,8 @@ module.exports = {
 			const { id } = req.params;
 			const deleteStatus = await User.deleteUserById(id);
 			if (!deleteStatus.deletedCount) throw { name: "notFound" };
-			res.status(200).json({
-				statusCode: 200,
-				deleteStatus
-			});
+			res.status(200).json(deleteStatus);
 		} catch (error) {
-			console.log({ name: error.name, messsage: error.message });
 			next(error);
 		}
 	}

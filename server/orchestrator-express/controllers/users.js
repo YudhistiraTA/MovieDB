@@ -1,7 +1,7 @@
 const axios = require("axios");
 const redis = require("../config/redisConnection");
-const MOVIE_URL = process.env.MOVIE_URL || "http://localhost:3000";
-const USER_URL = process.env.USER_URL || "http://localhost:3001";
+const MOVIE_URL = process.env.MOVIE_URL || "http://localhost:4002";
+const USER_URL = process.env.USER_URL || "http://localhost:4001";
 
 module.exports = class UserController {
 	static async findAllUsers(req, res, next) {
@@ -28,7 +28,6 @@ module.exports = class UserController {
 			}
 			const { data: user } = await axios.get(USER_URL + "/users/" + id);
 			if (!user.data) throw { name: "notFound" };
-			console.log(user.data);
 			redis.set(`user:${id}`, JSON.stringify(user.data));
 			res.status(200).json(user.data);
 		} catch (error) {
@@ -49,6 +48,7 @@ module.exports = class UserController {
 					address
 				}
 			);
+			redis.del("users");
 			res.status(201).json(createStatus);
 		} catch (error) {
 			console.log(error);
@@ -61,6 +61,7 @@ module.exports = class UserController {
 			const { data: deleteStatus } = await axios.delete(
 				USER_URL + "/users/" + id
 			);
+			redis.del("users");
 			res.status(200).send(deleteStatus);
 		} catch (error) {
 			next(error.response.data);

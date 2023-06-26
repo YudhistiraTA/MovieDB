@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
 const MovieCard = ({ movie }) => {
 	const navigation = useNavigation();
@@ -15,7 +14,7 @@ const MovieCard = ({ movie }) => {
 			<Card.Actions>
 				<Button
 					style={{ margin: 20 }}
-					onPress={() => navigation.navigate("Detail", { movie })}
+					onPress={() => navigation.navigate("Detail", { id: movie.id })}
 				>
 					Details
 				</Button>

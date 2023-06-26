@@ -43,7 +43,6 @@ module.exports = class MovieController {
 			});
 		} catch (error) {
 			trx.rollback();
-			console.log(error);
 			next(error);
 		}
 	}
@@ -53,21 +52,67 @@ module.exports = class MovieController {
 			let data;
 			if (id) {
 				data = await Movie.findByPk(id, {
-					include: [{ model: Cast }, { model: Genre }],
-					attributes: { exclude: ["createdAt", "updatedAt"] }
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			} else if (slug) {
 				data = await Movie.findOne({
 					where: { slug },
-					include: [{ model: Cast }, { model: Genre }],
-					attributes: { exclude: ["createdAt", "updatedAt"] }
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			} else {
 				data = await Movie.findAll({
-					include: [{ model: Cast }, { model: Genre }],
-					order: [["id", "ASC"]]
+					include: [
+						{
+							model: Cast,
+							attributes: {
+								exclude: ["createdAt", "updatedAt", "MovieId"]
+							}
+						},
+						{
+							model: Genre,
+							attributes: {
+								exclude: ["createdAt", "updatedAt"]
+							}
+						}
+					],
+					order: [["id", "ASC"]],
+					attributes: {
+						exclude: ["createdAt", "updatedAt", "GenreId"]
+					}
 				});
 				if (!data) throw { name: "notFound" };
 			}
@@ -99,6 +144,8 @@ module.exports = class MovieController {
 				Casts
 			} = req.body;
 			const { id } = req.params;
+			const foundData = await Movie.findByPk(id);
+			if (!foundData) throw { name: "notFound", message: "Not found" };
 			const updatedData = await Movie.update(
 				{
 					title,
@@ -124,9 +171,8 @@ module.exports = class MovieController {
 			});
 			trx.commit();
 			if (!updatedData[0]) throw { name: "notFound" };
-			res.status(200).send(updatedData);
+			res.status(200).send({ message: "Edited successfully!" });
 		} catch (error) {
-			console.log(error);
 			next(error);
 		}
 	}
