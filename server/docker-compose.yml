@@ -1,0 +1,23 @@
+services:
+  app:
+    build: ./services/app
+    container_name: app-services
+    ports:
+      - "5002:4002"
+    environment:
+      - DATABASE_URL=${SUPABASE_URL}
+  user:
+    build: ./services/users
+    container_name: user-services
+    ports:
+      - "5001:4001"
+    environment:
+      - DATABASE_URL=${MONGO_DB_URL}
+  orchestrator:
+    build: ./orchestrator
+    container_name: orchestrator
+    ports:
+      - "5000:4000"
+    environment:
+      - APP_SERVICE_URL=http://app:5002
+      - USER_SERVICE_URL=http://user:5001
