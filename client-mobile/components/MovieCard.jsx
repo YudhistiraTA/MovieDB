@@ -15,7 +15,7 @@ const MovieCard = ({ movie }) => {
 			<Card.Actions>
 				<Button
 					style={{ margin: 20 }}
-					onPress={() => navigation.navigate("Detail", { movie })}
+					onPress={() => navigation.navigate("Detail", { id: movie.id })}
 				>
 					Details
 				</Button>

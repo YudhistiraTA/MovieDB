@@ -1,9 +1,19 @@
 import { Button, Title, Paragraph, Divider, Avatar } from "react-native-paper";
 import { View, Image, StyleSheet, Linking, ScrollView } from "react-native";
+import { useQuery } from "@apollo/client";
+import { GET_MOVIES_DETAIL } from "../config/queries";
 
 const Detail = ({ route }) => {
-	const { movie } = route.params;
-
+	const { id } = route.params;
+	const {
+		loading,
+		error,
+		data: movie
+	} = useQuery(GET_MOVIES_DETAIL, {
+		variables: {
+			movieId: id
+		}
+	});
 	return (
 		<ScrollView style={styles.container}>
 			<Image style={styles.image} source={{ uri: movie?.imgUrl }} />
