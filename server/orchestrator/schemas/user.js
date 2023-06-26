@@ -47,7 +47,7 @@ const resolvers = {
 		users: async () => {
 			try {
 				const { data: users } = await axios.get(`${USER_URL}/users`);
-				return { users: users.data };
+				return { users: users?.data };
 			} catch (error) {
 				return { Error: error.response.data };
 			}
@@ -57,7 +57,7 @@ const resolvers = {
 				const { data: user } = await axios.get(
 					`${USER_URL}/users/${_id}`
 				);
-				return user.data;
+				return user?.data;
 			} catch (error) {
 				return { Error: error.response.data };
 			}
