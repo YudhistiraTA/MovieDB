@@ -48,7 +48,7 @@ const typeDefs = `#graphql
 		message: String
 	}
     type Mutation {
-        createMovie(input: UserInput!): SuccessOrError
+        createMovie(input: MovieInput!): SuccessOrError
 		deleteMovie(id: Int!): SuccessOrError
     }
     type Query {
@@ -82,14 +82,14 @@ const resolvers = {
 	Mutation: {
 		createMovie: async (_, { input }) => {
 			try {
+				console.log(input);
 				const { data: movie } = await axios.post(
-					`${USER_URL}/movies`,
+					`${MOVIE_URL}/movies`,
 					input
 				);
-				console.log(movie);
 				return movie;
 			} catch (error) {
-				console.log(error);
+				error.response.data.message = error.response.data.message.join(", ")
 				return { Error: error.response.data };
 			}
 		},
@@ -98,10 +98,8 @@ const resolvers = {
 				const { data: deleteStatus } = await axios.delete(
 					`${MOVIE_URL}/movies/${id}`
 				);
-				console.log(deleteStatus);
 				return deleteStatus;
 			} catch (error) {
-				console.log(error.response.data);
 				return { Error: error.response.data };
 			}
 		}
