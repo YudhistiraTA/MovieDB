@@ -1,7 +1,16 @@
-import { Button, Title, Paragraph, Divider, Avatar } from "react-native-paper";
+import {
+	Button,
+	Title,
+	Paragraph,
+	Divider,
+	Avatar,
+	Badge
+} from "react-native-paper";
 import { View, Image, StyleSheet, Linking, ScrollView } from "react-native";
 import { useQuery } from "@apollo/client";
 import { GET_MOVIES_DETAIL } from "../config/queries";
+import { useEffect } from "react";
+import CastsCarousel from "../components/CastCarousel";
 
 const Detail = ({ route }) => {
 	const { id } = route.params;
@@ -16,10 +25,16 @@ const Detail = ({ route }) => {
 	});
 	return (
 		<ScrollView style={styles.container}>
-			<Image style={styles.image} source={{ uri: movie?.imgUrl }} />
+			<Image
+				style={styles.image}
+				source={{ uri: movie?.movie?.imgUrl }}
+			/>
 			<View style={styles.content}>
-				<Title style={styles.title}>{movie?.title}</Title>
-				<Paragraph style={styles.synopsis}>{movie?.synopsis}</Paragraph>
+				<Title style={styles.title}>{movie?.movie?.title}</Title>
+				<Badge>Posted by: {movie?.movie?.Author?.username}</Badge>
+				<Paragraph style={styles.synopsis}>
+					{movie?.movie?.synopsis}
+				</Paragraph>
 				<Divider style={styles.divider} />
 				<View style={styles.row}>
 					<Avatar.Icon
@@ -28,12 +43,14 @@ const Detail = ({ route }) => {
 						icon="star"
 						color="yellow"
 					/>
-					<Title style={styles.rating}>{movie?.rating}</Title>
+					<Title style={styles.rating}>{movie?.movie?.rating}</Title>
 				</View>
+				<Title>Casts</Title>
+				<CastsCarousel data={movie?.movie?.Casts} />
 				<Button
 					mode="contained"
 					style={styles.button}
-					onPress={() => Linking.openURL(movie?.trailerUrl)}
+					onPress={() => Linking.openURL(movie?.movie?.trailerUrl)}
 				>
 					Watch Trailer
 				</Button>
