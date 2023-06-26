@@ -1,5 +1,6 @@
 const axios = require("axios");
 const MOVIE_URL = process.env.MOVIE_URL || "http://127.0.0.1:4002";
+const USER_URL = process.env.USER_URL || "http://127.0.0.1:4001";
 
 const typeDefs = `#graphql
 	type Error {
@@ -15,6 +16,15 @@ const typeDefs = `#graphql
         id: Int
         name: String
     }
+	type User {
+		_id: String
+		username: String
+		email: String
+		role: String
+		phoneNumber: String
+		address: String
+		Error: Error
+	}
 	type Movie {
         id: Int
 		title: String
@@ -24,6 +34,7 @@ const typeDefs = `#graphql
 		rating: String
 		Casts: [Cast]
         Genre: Genre
+		Author: User
         Error: Error
 	}
     input CastInput {
@@ -65,7 +76,6 @@ const resolvers = {
 				const { data: movies } = await axios.get(MOVIE_URL + "/movies");
 				return { movies };
 			} catch (error) {
-				console.log(error);
 				return { Error: error.response.data };
 			}
 		},
@@ -74,6 +84,8 @@ const resolvers = {
 				const { data: movie } = await axios.get(
 					MOVIE_URL + "/movies/" + id
 				);
+				const {data: author} = await axios.get(USER_URL + "/users/" + movie.AuthorId);
+				movie.Author = author.data;
 				return movie;
 			} catch (error) {
 				return { Error: error.response.data };
@@ -83,7 +95,6 @@ const resolvers = {
 	Mutation: {
 		createMovie: async (_, { input }) => {
 			try {
-				console.log(input);
 				const { data: movie } = await axios.post(
 					`${MOVIE_URL}/movies`,
 					input
