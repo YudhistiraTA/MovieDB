@@ -1,5 +1,5 @@
 const axios = require("axios");
-const USER_URL = process.env.USER_URL || "http://127.0.0.1:4001";
+const USER_URL = process.env.USER_SERVICE_URL || "http://127.0.0.1:4001";
 
 const typeDefs = `#graphql
 	type Error {
