@@ -9,6 +9,7 @@ WORKDIR /users
 COPY ["package.json", "package-lock.json", "./"]
 
 RUN npm install && npm cache clean --force
+RUN npm install -g nodemon
 
 COPY . .
 
