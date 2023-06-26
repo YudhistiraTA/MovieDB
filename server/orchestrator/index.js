@@ -16,8 +16,7 @@ const {
 		resolvers: [userResolvers, MovieResolvers],
 		introspection: true,
 		formatError: (err) => {
-			const errorDetails = JSON.parse(err.message);
-			return new ApolloError(errorDetails.message, errorDetails.name);
+			console.log(err);
 		}
 	});
 

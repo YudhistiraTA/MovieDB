@@ -145,6 +145,8 @@ module.exports = class MovieController {
 				Casts
 			} = req.body;
 			const { id } = req.params;
+			const foundData = await Movie.findByPk(id);
+			if (!foundData) throw { name: "notFound", message: "Not found" };
 			const updatedData = await Movie.update(
 				{
 					title,
@@ -170,9 +172,8 @@ module.exports = class MovieController {
 			});
 			trx.commit();
 			if (!updatedData[0]) throw { name: "notFound" };
-			res.status(200).send(updatedData);
+			res.status(200).send({ message: "Edited successfully!" });
 		} catch (error) {
-			console.log(error);
 			next(error);
 		}
 	}
