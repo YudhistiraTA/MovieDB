@@ -1,6 +1,6 @@
 const axios = require("axios");
-const MOVIE_URL = process.env.MOVIE_URL || "http://127.0.0.1:4002";
-const USER_URL = process.env.USER_URL || "http://127.0.0.1:4001";
+const MOVIE_URL = process.env.APP_SERVICE_URL || "http://127.0.0.1:4002";
+const USER_URL = process.env.USER_SERVICE_URL || "http://127.0.0.1:4001";
 
 const typeDefs = `#graphql
 	type Error {
