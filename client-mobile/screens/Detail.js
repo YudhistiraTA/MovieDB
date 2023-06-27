@@ -6,10 +6,17 @@ import {
 	Avatar,
 	Badge
 } from "react-native-paper";
-import { View, Image, StyleSheet, Linking, ScrollView } from "react-native";
+import {
+	View,
+	Image,
+	StyleSheet,
+	Linking,
+	ScrollView
+} from "react-native";
 import { useQuery } from "@apollo/client";
 import { GET_MOVIES_DETAIL } from "../config/queries";
 import CastsCarousel from "../components/CastCarousel";
+import SpinnerComponent from "../components/SpinnerComponent";
 
 const Detail = ({ route }) => {
 	const { id } = route.params;
@@ -18,6 +25,8 @@ const Detail = ({ route }) => {
 			movieId: id
 		}
 	});
+	if (loading)
+		return <SpinnerComponent/>;
 	return (
 		<ScrollView style={styles.container}>
 			<Image
@@ -44,7 +53,10 @@ const Detail = ({ route }) => {
 					<Title style={styles.rating}>{movie?.movie?.rating}</Title>
 				</View>
 				<Title>Casts</Title>
-				<CastsCarousel data={movie?.movie?.Casts} style={{marginBottom:5}} />
+				<CastsCarousel
+					data={movie?.movie?.Casts}
+					style={{ marginBottom: 5 }}
+				/>
 				<Button
 					mode="contained"
 					style={styles.button}
